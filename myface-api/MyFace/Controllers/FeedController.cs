@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MyFace.Authorization;
 using MyFace.Models.Request;
 using MyFace.Models.Response;
 using MyFace.Repositories;
@@ -16,7 +17,7 @@ namespace MyFace.Controllers
             _posts = posts;
         }
 
-        [HttpGet("")]
+        [HttpGet(""), BasicAuthorization]
         public ActionResult<FeedModel> GetFeed([FromQuery] FeedSearchRequest searchRequest)
         {
             var posts = _posts.SearchFeed(searchRequest);

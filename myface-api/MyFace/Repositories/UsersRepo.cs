@@ -2,6 +2,9 @@
 using System.Linq;
 using MyFace.Models.Database;
 using MyFace.Models.Request;
+using System.Security.Cryptography;
+using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+using System;
 
 namespace MyFace.Repositories
 {
@@ -59,12 +62,31 @@ namespace MyFace.Repositories
 
         public User Create(CreateUserRequest newUser)
         {
+            string password = newUser.Password;
+            byte[] saltByte = new byte[128 / 8];
+            using (var rngCsp = new RNGCryptoServiceProvider())
+            {
+                rngCsp.GetNonZeroBytes(saltByte);
+            }
+
+            string salt = Convert.ToBase64String(saltByte);
+            string hash = Convert.ToBase64String(KeyDerivation.Pbkdf2(
+                password: password,
+                salt: saltByte,
+                prf: KeyDerivationPrf.HMACSHA256,
+                iterationCount: 100000,
+                numBytesRequested: 256 / 8
+            ));
+
+
             var insertResponse = _context.Users.Add(new User
             {
                 FirstName = newUser.FirstName,
                 LastName = newUser.LastName,
-                Email = newUser.Email,
                 Username = newUser.Username,
+                Email = newUser.Email,
+                Salt = saltByte,
+                HashedPassword = hash,
                 ProfileImageUrl = newUser.ProfileImageUrl,
                 CoverImageUrl = newUser.CoverImageUrl,
             });

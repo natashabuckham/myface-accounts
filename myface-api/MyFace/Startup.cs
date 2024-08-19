@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -5,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using MyFace.Authorization;
 using MyFace.Repositories;
 
 namespace MyFace
@@ -29,6 +31,9 @@ namespace MyFace
                 options.UseSqlite("Data Source=myface.db");
             });
 
+            // adds authentication config here
+            services.AddAuthentication("BasicAuthentication").AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>(BasicAuthenticationDefaults.AuthenticationScheme, null);
+            
             services.AddCors(options =>
             {
                 options.AddPolicy(CORS_POLICY_NAME, builder =>
@@ -61,6 +66,10 @@ namespace MyFace
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            // this adds middleware from ASP.NET Core
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseCors(CORS_POLICY_NAME);
 

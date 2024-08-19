@@ -10,7 +10,7 @@ namespace MyFace.Models.Database
         public string LastName { get; set; }
         public string Username { get; set; }
         public string Email { get; set; }
-        public string Salt { get; set; }
+        public byte[] Salt { get; set; }
         public string HashedPassword { get; set; }
         public string ProfileImageUrl { get; set; }
         public string CoverImageUrl { get; set; }

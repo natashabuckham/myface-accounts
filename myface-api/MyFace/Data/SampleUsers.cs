@@ -120,17 +120,15 @@ namespace MyFace.Data
             return Enumerable.Range(0, NumberOfUsers).Select(CreateRandomUser);
         }
 
-        public static (string Salt, string Hash) GetSaltHash()
+        public static (byte[] Salt, string Hash) GetSaltHash(int index)
         {
-            string password = "dog";
+            string password = Data[index][2];
             
             byte[] saltByte = new byte[128 / 8];
             using (var rngCsp = new RNGCryptoServiceProvider())
             {
                 rngCsp.GetNonZeroBytes(saltByte);
             }
-
-            string salt = Convert.ToBase64String(saltByte);
 
             string hash = Convert.ToBase64String(KeyDerivation.Pbkdf2(
                 password: password,
@@ -140,12 +138,12 @@ namespace MyFace.Data
                 numBytesRequested: 256 / 8
             ));
 
-            return (salt, hash);
+            return (saltByte, hash);
         }
 
         private static User CreateRandomUser(int index)
         {
-            var saltHash = GetSaltHash();
+            var saltHash = GetSaltHash(index);
 
             return new User
             {

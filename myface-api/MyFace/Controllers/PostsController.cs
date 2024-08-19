@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MyFace.Authorization;
 using MyFace.Models.Request;
 using MyFace.Models.Response;
 using MyFace.Repositories;
@@ -32,6 +33,7 @@ namespace MyFace.Controllers
         }
 
         [HttpPost("create")]
+        [BasicAuthorization] // custom authorization attribute
         public IActionResult Create([FromBody] CreatePostRequest newPost)
         {
             if (!ModelState.IsValid)
