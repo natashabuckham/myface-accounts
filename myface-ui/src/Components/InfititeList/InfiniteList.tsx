@@ -2,13 +2,16 @@
 import {ListResponse} from "../../Api/apiClient";
 import {Grid} from "../Grid/Grid";
 import "./InfiniteList.scss";
+import {LoginContext} from "../../Components/LoginManager/LoginManager";
+import { useContext } from 'react';
 
 interface InfiniteListProps<T> {
-    fetchItems: (page: number, pageSize: number) => Promise<ListResponse<T>>;
+    fetchItems: (page: number, pageSize: number, header: string) => Promise<ListResponse<T>>;
     renderItem: (item: T) => ReactNode;
 }
 
 export function InfiniteList<T>(props: InfiniteListProps<T>): JSX.Element {
+    const loginContext = useContext(LoginContext);
     const [items, setItems] = useState<T[]>([]);
     const [page, setPage] = useState(1);
     const [hasNextPage, setHasNextPage] = useState(false);
@@ -26,12 +29,12 @@ export function InfiniteList<T>(props: InfiniteListProps<T>): JSX.Element {
     }
     
     useEffect(() => {
-        props.fetchItems(1, 10)
+        props.fetchItems(1, 10, loginContext.encodedHeader)
             .then(replaceItems);
     }, [props]);
 
     function incrementPage() {
-        props.fetchItems(page + 1, 10)
+        props.fetchItems(page + 1, 10, loginContext.encodedHeader)
             .then(appendItems);
     }
     

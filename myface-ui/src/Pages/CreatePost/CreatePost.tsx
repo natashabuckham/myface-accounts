@@ -2,8 +2,8 @@
 import {Page} from "../Page/Page";
 import {createPost} from "../../Api/apiClient";
 import {Link, Redirect} from "react-router-dom";
-import "./CreatePost.scss";
 import { LoginContext } from "../../Components/LoginManager/LoginManager";
+import "./CreatePost.scss";
 
 type FormStatus = "READY" | "SUBMITTING" | "ERROR" | "FINISHED"
 
@@ -18,15 +18,9 @@ export function CreatePostForm(): JSX.Element {
     function submitForm(event: FormEvent) {
         event.preventDefault();
         setStatus("SUBMITTING");
-        createPost({message, imageUrl, userId: parseInt(userId)})
+        createPost({message, imageUrl, userId: parseInt(userId)}, loginContext.encodedHeader)
             .then(() => setStatus("FINISHED"))
             .catch(() => setStatus("ERROR"));
-    }
-    
-    if (loginContext.isLoggedIn == false) {
-        return (
-            <Redirect to='/login' />
-        )
     }
 
     if (status === "FINISHED") {

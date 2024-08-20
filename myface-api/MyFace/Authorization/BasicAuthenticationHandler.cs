@@ -40,6 +40,20 @@ namespace MyFace.Authorization
             var authBase64Decoded = Encoding.UTF8.GetString(Convert.FromBase64String(authorizationHeader.Replace("Basic ", "", StringComparison.OrdinalIgnoreCase)));
             var authSplit = authBase64Decoded.Split(new[] { ':' }, 2);
 
+
+            //Frontend creates the header with "Basic" => Basic a3BsYWNpZG8wOmtwbGFjaWRvMA==
+            //From here, the backed extract the data removing "Basic " and separating username and passowrd
+            // => a3BsYWNpZG8wOmtwbGFjaWRvMA==
+            // => kplacido0:kplacido0
+            // => username:password
+            // backend assigns these values to the variables
+            // => clientId: kplacido0
+            // => clientSecret: kplacido0
+            // finally we combine the secret with the salt to get a hashedPassword
+            // and compare it to the hashedPassword stored in the database
+            // if they match, the authentication is correct
+
+
             if (authSplit.Length != 2)
             {
                 return Task.FromResult(AuthenticateResult.Fail("Invalid Authorization header format"));

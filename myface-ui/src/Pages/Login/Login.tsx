@@ -12,6 +12,8 @@ export function Login(): JSX.Element {
     function tryLogin(event: FormEvent) {
         event.preventDefault();
         loginContext.logIn();
+        loginContext.saveUsernameToContext(username);
+        loginContext.savePasswordToContext(password);
     }
     
     return (
