@@ -57,8 +57,12 @@ export async function fetchUsers(
   return await response.json();
 }
 
-export async function fetchUser(userId: string | number): Promise<User> {
-  const response = await fetch(`https://localhost:5001/users/${userId}`);
+export async function fetchUser(userId: string | number, header: string): Promise<User> {
+  const response = await fetch(`https://localhost:5001/users/${userId}`, {
+    headers: {
+      "Authorization": `Basic ${header}`,
+    },
+  });
   return await response.json();
 }
 
@@ -81,10 +85,16 @@ export async function fetchPosts(
 export async function fetchPostsForUser(
   page: number,
   pageSize: number,
-  userId: string | number
+  userId: string | number,
+  header: string
 ) {
   const response = await fetch(
-    `https://localhost:5001/feed?page=${page}&pageSize=${pageSize}&postedBy=${userId}`
+    `https://localhost:5001/feed?page=${page}&pageSize=${pageSize}&postedBy=${userId}`,
+    {
+      headers: {
+        "Authorization": `Basic ${header}`,
+      },
+    }
   );
   return await response.json();
 }
@@ -92,10 +102,16 @@ export async function fetchPostsForUser(
 export async function fetchPostsLikedBy(
   page: number,
   pageSize: number,
-  userId: string | number
+  userId: string | number,
+  header: string
 ) {
   const response = await fetch(
-    `https://localhost:5001/feed?page=${page}&pageSize=${pageSize}&likedBy=${userId}`
+    `https://localhost:5001/feed?page=${page}&pageSize=${pageSize}&likedBy=${userId}`,
+    {
+      headers: {
+        "Authorization": `Basic ${header}`,
+      },
+    }
   );
   return await response.json();
 }
@@ -103,10 +119,16 @@ export async function fetchPostsLikedBy(
 export async function fetchPostsDislikedBy(
   page: number,
   pageSize: number,
-  userId: string | number
+  userId: string | number,
+  header: string
 ) {
   const response = await fetch(
-    `https://localhost:5001/feed?page=${page}&pageSize=${pageSize}&dislikedBy=${userId}`
+    `https://localhost:5001/feed?page=${page}&pageSize=${pageSize}&dislikedBy=${userId}`,
+    {
+      headers: {
+        "Authorization": `Basic ${header}`,
+      },
+    }
   );
   return await response.json();
 }
