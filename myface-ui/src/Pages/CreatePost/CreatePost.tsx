@@ -1,12 +1,15 @@
-﻿import React, {FormEvent, useState} from "react";
+﻿import React, {FormEvent, useState, useContext} from "react";
 import {Page} from "../Page/Page";
 import {createPost} from "../../Api/apiClient";
-import {Link} from "react-router-dom";
+import {Link, Redirect} from "react-router-dom";
 import "./CreatePost.scss";
+import { LoginContext } from "../../Components/LoginManager/LoginManager";
 
 type FormStatus = "READY" | "SUBMITTING" | "ERROR" | "FINISHED"
 
 export function CreatePostForm(): JSX.Element {
+    const loginContext = useContext(LoginContext);
+
     const [message, setMessage] = useState("");
     const [imageUrl, setImageUrl] = useState("");
     const [userId, setUserId] = useState("");
@@ -20,6 +23,12 @@ export function CreatePostForm(): JSX.Element {
             .catch(() => setStatus("ERROR"));
     }
     
+    if (loginContext.isLoggedIn == false) {
+        return (
+            <Redirect to='/login' />
+        )
+    }
+
     if (status === "FINISHED") {
         return <div>
             <p>Form Submitted Successfully!</p>
