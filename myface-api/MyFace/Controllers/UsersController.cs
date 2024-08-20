@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MyFace.Authorization;
 using MyFace.Models.Request;
 using MyFace.Models.Response;
 using MyFace.Repositories;
@@ -7,6 +8,7 @@ namespace MyFace.Controllers
 {
     [ApiController]
     [Route("/users")]
+    [BasicAuthorization]
     public class UsersController : ControllerBase
     {
         private readonly IUsersRepo _users;

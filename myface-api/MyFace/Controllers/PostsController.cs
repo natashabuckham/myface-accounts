@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MyFace.Authorization;
 using MyFace.Models.Request;
 using MyFace.Models.Response;
@@ -33,7 +34,7 @@ namespace MyFace.Controllers
         }
 
         [HttpPost("create")]
-        [BasicAuthorization] // custom authorization attribute
+        [BasicAuthorization]
         public IActionResult Create([FromBody] CreatePostRequest newPost)
         {
             if (!ModelState.IsValid)
@@ -49,6 +50,7 @@ namespace MyFace.Controllers
         }
 
         [HttpPatch("{id}/update")]
+        [BasicAuthorization]
         public ActionResult<PostResponse> Update([FromRoute] int id, [FromBody] UpdatePostRequest update)
         {
             if (!ModelState.IsValid)
@@ -61,6 +63,7 @@ namespace MyFace.Controllers
         }
 
         [HttpDelete("{id}")]
+        [BasicAuthorization]
         public IActionResult Delete([FromRoute] int id)
         {
             _posts.Delete(id);

@@ -8,6 +8,7 @@ namespace MyFace.Controllers
 {
     [ApiController]
     [Route("feed")]
+    [BasicAuthorization]
     public class FeedController : ControllerBase
     {
         private readonly IPostsRepo _posts;
@@ -17,7 +18,7 @@ namespace MyFace.Controllers
             _posts = posts;
         }
 
-        [HttpGet(""), BasicAuthorization]
+        [HttpGet("")]
         public ActionResult<FeedModel> GetFeed([FromQuery] FeedSearchRequest searchRequest)
         {
             var posts = _posts.SearchFeed(searchRequest);

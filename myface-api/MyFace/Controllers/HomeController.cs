@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
+using MyFace.Authorization;
 
 namespace MyFace.Controllers
 {
     [ApiController]
     [Route("")]
+    [BasicAuthorization]
     public class HomeController : ControllerBase
     {
         [HttpGet("")]
@@ -15,7 +17,7 @@ namespace MyFace.Controllers
                 {"/users", "for information on users."},
                 {"/posts", "for information on posts."},
                 {"/interactions", "for information about the interactions between users and posts"},
-                {"/feeds", "all the data required to build a 'feed' of posts."},
+                {"/feed", "all the data required to build a 'feed' of posts."},
             };
         }
     }
