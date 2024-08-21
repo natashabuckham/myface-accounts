@@ -4,6 +4,7 @@ import {fetchPosts} from "../../Api/apiClient";
 import {PostCard} from "../../Components/PostCard/PostCard";
 import {InfiniteList} from "../../Components/InfititeList/InfiniteList";
 import {Link} from "react-router-dom";
+import './Feed.scss';
 
 export function Feed(): JSX.Element {
     return (

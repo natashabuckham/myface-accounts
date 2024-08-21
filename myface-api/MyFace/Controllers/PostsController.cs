@@ -9,6 +9,7 @@ namespace MyFace.Controllers
 {
     [ApiController]
     [Route("/posts")]
+    [BasicAuthorization]
     public class PostsController : ControllerBase
     {    
         private readonly IPostsRepo _posts;
@@ -34,7 +35,6 @@ namespace MyFace.Controllers
         }
 
         [HttpPost("create")]
-        [BasicAuthorization]
         public IActionResult Create([FromBody] CreatePostRequest newPost)
         {
             if (!ModelState.IsValid)
@@ -50,7 +50,6 @@ namespace MyFace.Controllers
         }
 
         [HttpPatch("{id}/update")]
-        [BasicAuthorization]
         public ActionResult<PostResponse> Update([FromRoute] int id, [FromBody] UpdatePostRequest update)
         {
             if (!ModelState.IsValid)
@@ -63,7 +62,6 @@ namespace MyFace.Controllers
         }
 
         [HttpDelete("{id}")]
-        [BasicAuthorization]
         public IActionResult Delete([FromRoute] int id)
         {
             _posts.Delete(id);

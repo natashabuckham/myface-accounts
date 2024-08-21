@@ -13,6 +13,10 @@ import {CreatePost} from "../Pages/CreatePost/CreatePost";
 function Routes(): ReactElement {
     const loginContext = useContext(LoginContext);
     
+    if (loginContext.encodedHeader == "Og==") {
+        return <Login/>
+    }
+
     if (!loginContext.isLoggedIn) {
         return <Login/>
     }
