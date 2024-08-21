@@ -7,9 +7,12 @@ export const LoginContext = createContext({
   logOut: () => {},
   username: "",
   password: "",
+  userId: 0,
   saveUsernameToContext: (username: string) => {},
   savePasswordToContext: (password: string) => {},
-  encodedHeader: ""
+  saveUserIdToContext: (userId: number) => {},
+  encodedHeader: "",
+  saveEncodedHeaderToContext: () => {}
 });
 
 interface LoginManagerProps {
@@ -21,6 +24,8 @@ export function LoginManager(props: LoginManagerProps): JSX.Element {
 
   const [contextUsername, setContextUsername] = useState("");
   const [contextPassword, setContextPassword] = useState("");
+  const [encodedHeader, setEncodedHeader] = useState("");
+  const [contextUserId, setContextUserId] = useState(0);
 
   function logIn() {
     setLoggedIn(true);
@@ -38,6 +43,14 @@ export function LoginManager(props: LoginManagerProps): JSX.Element {
     setContextPassword(password);
   }
 
+  function saveEncodedHeaderToContext() {
+    setEncodedHeader(btoa(`${contextUsername}:${contextPassword}`));
+  }
+
+  function saveUserIdToContext(userId: number) {
+    setContextUserId(userId);
+  }
+
   const context = {
     isLoggedIn: loggedIn,
     isAdmin: loggedIn,
@@ -45,9 +58,12 @@ export function LoginManager(props: LoginManagerProps): JSX.Element {
     logOut: logOut,
     username: contextUsername,
     password: contextPassword,
+    userId: contextUserId,
     saveUsernameToContext: saveUsernameToContext,
     savePasswordToContext: savePasswordToContext,
-    encodedHeader: btoa(`${contextUsername}:${contextPassword}`)
+    saveUserIdToContext: saveUserIdToContext,
+    encodedHeader: encodedHeader,
+    saveEncodedHeaderToContext: saveEncodedHeaderToContext
   };
 
   return (

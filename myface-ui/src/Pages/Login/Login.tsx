@@ -2,18 +2,27 @@
 import {Page} from "../Page/Page";
 import {LoginContext} from "../../Components/LoginManager/LoginManager";
 import "./Login.scss";
+import { fetchUserByUsername } from '../../Api/apiClient';
 
 export function Login(): JSX.Element {
     const loginContext = useContext(LoginContext);
     
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+
+    const [userId, setUserId] = useState(0);
     
     function tryLogin(event: FormEvent) {
         event.preventDefault();
         loginContext.logIn();
         loginContext.saveUsernameToContext(username);
         loginContext.savePasswordToContext(password);
+        loginContext.saveEncodedHeaderToContext();
+        
+        fetchUserByUsername(username, loginContext.encodedHeader)
+        .then(response => setUserId(response.id));
+        
+        loginContext.saveUserIdToContext(userId);
     }
     
     return (

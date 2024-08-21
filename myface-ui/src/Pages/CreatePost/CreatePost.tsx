@@ -18,7 +18,7 @@ export function CreatePostForm(): JSX.Element {
     function submitForm(event: FormEvent) {
         event.preventDefault();
         setStatus("SUBMITTING");
-        createPost({message, imageUrl, userId: parseInt(userId)}, loginContext.encodedHeader)
+        createPost({message, imageUrl, userId: loginContext.userId}, loginContext.encodedHeader)
             .then(() => setStatus("FINISHED"))
             .catch(() => setStatus("ERROR"));
     }
@@ -40,11 +40,6 @@ export function CreatePostForm(): JSX.Element {
             <label className="form-label">
                 Image URL
                 <input className="form-input" value={imageUrl} onChange={event => setImageUrl(event.target.value)}/>
-            </label>
-
-            <label className="form-label">
-                User ID
-                <input className="form-input" value={userId} onChange={event => setUserId(event.target.value)}/>
             </label>
 
             <button className="submit-button" disabled={status === "SUBMITTING"} type="submit">Create Post</button>

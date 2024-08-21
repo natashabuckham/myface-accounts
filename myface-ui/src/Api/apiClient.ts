@@ -66,6 +66,15 @@ export async function fetchUser(userId: string | number, header: string): Promis
   return await response.json();
 }
 
+export async function fetchUserByUsername(username: string, header: string): Promise<User> {
+  const response = await fetch(`https://localhost:5001/users/username/${username}`, {
+    headers: {
+      "Authorization": `Basic ${header}`,
+    },
+  });
+  return await response.json();
+}
+
 export async function fetchPosts(
   page: number,
   pageSize: number,

@@ -8,7 +8,6 @@ namespace MyFace.Controllers
 {
     [ApiController]
     [Route("/users")]
-    [BasicAuthorization]
     public class UsersController : ControllerBase
     {
         private readonly IUsersRepo _users;
@@ -19,6 +18,7 @@ namespace MyFace.Controllers
         }
         
         [HttpGet("")]
+        [BasicAuthorization]
         public ActionResult<UserListResponse> Search([FromQuery] UserSearchRequest searchRequest)
         {
             var users = _users.Search(searchRequest);
@@ -27,13 +27,22 @@ namespace MyFace.Controllers
         }
 
         [HttpGet("{id}")]
+        [BasicAuthorization]
         public ActionResult<UserResponse> GetById([FromRoute] int id)
         {
             var user = _users.GetById(id);
             return new UserResponse(user);
         }
 
+        [HttpGet("username/{username}")]
+        public ActionResult<UserResponse> GetByUsername([FromRoute] string username)
+        {
+            var user = _users.GetByUsername(username);
+            return new UserResponse(user);
+        }
+
         [HttpPost("create")]
+        [BasicAuthorization]
         public IActionResult Create([FromBody] CreateUserRequest newUser)
         {
             if (!ModelState.IsValid)
@@ -49,6 +58,7 @@ namespace MyFace.Controllers
         }
 
         [HttpPatch("{id}/update")]
+        [BasicAuthorization]
         public ActionResult<UserResponse> Update([FromRoute] int id, [FromBody] UpdateUserRequest update)
         {
             if (!ModelState.IsValid)
@@ -61,6 +71,7 @@ namespace MyFace.Controllers
         }
         
         [HttpDelete("{id}")]
+        [BasicAuthorization]
         public IActionResult Delete([FromRoute] int id)
         {
             _users.Delete(id);
